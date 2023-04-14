@@ -1,6 +1,7 @@
 #rpgModel
 
 import random
+import enemies
 
 lootTable = []
 
@@ -22,28 +23,6 @@ class Hero:
         #stats according to index are [str, dex, int, lck, hp, mp, resil]
         #self.warrior = [
 
-class Enemy:
-    def  __init__(self, name, lootTable, damage, health, spellCache):
-        self.name = name;
-        self.lootTable = lootTable;
-        self.damage = damage;
-        self.health = health;
-        self.spellCache = spellCache;
-
-
-
-#enemy stats are as follows ("Name", [gold drop, loot-table], damage-deal, health pool); 
-
-gob = Enemy("Goblin",[random.randint(2,7),"Leather Scrap","Dagger"],3,27,["Intimidating Leer (def down + 1 speed down)","Poison Gack (+1 dmg + 33% chance to poision)"]);
-
-ogre = Enemy("Ogre",[random.randint(13,37),"Giant Club","Bile"],random.randint(14,17),55,["Polyphemus Rage (atk up)","Earthen Drag (phys dmg + AOE (if party))","Bile (hacks up... somethin' and lowers speed by 2"]);
-
-drag = Enemy("Draygern",[random.randint(250,500),"Dragon Scale","Glistening Eyeball"],random.randint(37,50),125,["Flame Boro (special dmg boro breath)","Scalapsular Crush (phys hardened tail slam)","Draconic Fortification (def + spdef up)","Blue Flame (heal)"]);
-
-thief = Enemy("Thief",[random.randint(10,25),"Serrated Dagger","Smokebomb"],random.randint(7,12),35,["Shadowsneak (evaision up, speed down)","Shadowstep (speed up but slight dmg down)","Shadowform Bow (special dmg bow, slight piercing dmg)"]);
-
-elemental = Enemy("Elemental",[random.randint(30,75),"Elemental Crystal","Crushed Powder"],random.randint(5,25),47,["Frozen Shackle (speed way down + frost dmg)","Water Spear (physical dmg)"]);
-
 def main():
     init = input("Hello Brave Champion! make your name known: ").capitalize();
     classInspect = input("Now, Brave Champion!, choose your class (Warrior, Mage, Thief): ").capitalize();
@@ -61,20 +40,20 @@ def main():
         whatEnemy = random.randint(1,100)
         print(whatEnemy);
         if whatEnemy >= 85:
-            print("you encountered a",drag.name,"!\n");
-            return drag
+            print("you encountered a",enemies.drag.name,"!\n");
+            return enemies.drag
         if whatEnemy < 85  and whatEnemy >= 70:
-            print("you encountered a",ogre.name,"!\n");
-            return ogre
+            print("you encountered a",enemies.ogre.name,"!\n");
+            return enemies.ogre
         if whatEnemy < 70 and whatEnemy >= 55:
-            print("you encountered a",elemental.name,"!\n");
-            return elemental
+            print("you encountered a",enemies.elemental.name,"!\n");
+            return enemies.elemental
         if whatEnemy < 55 and whatEnemy >=35:
-            print("you encountered a",thief.name,"!\n");
-            return thief
+            print("you encountered a",enemies.thief.name,"!\n");
+            return enemies.thief
         if whatEnemy < 35:
-            print("you encountered a",gob.name,"!\n");
-            return gob
+            print("you encountered a",enemies.gob.name,"!\n");
+            return enemies.gob
             
     def battleStart(enemyName):
         while enemyName.health > 0:
@@ -116,6 +95,7 @@ def main():
                     print("You failed to run away!");
                     enemyFight(enemyName);
 
+#replace every instance of damage and health with their requisite stats
 
     def enemyFight(enemy):
         print(enemy.name, "is getting ready to attack!");
