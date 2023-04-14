@@ -94,15 +94,16 @@ def main():
                 else:
                     spellBattlePrompt = input("Which Spell will you cast?: ").capitalize();
                     damagedEnemyInt = playerChar.stats[2]*2 - enemyName.health;
-                                
+                    enemyFight(enemyName);
+            
             if battleUserPrompt == "Inventory":
                 print(playerChar.inventory)
                 selectedItem = input("What item from your inventory would you like to use?: ");
                 if selectedItem == '':
-                    print("you don't have that item dumbass");
+                    print("you don't got nothin'");
                 else:
                     print("you used the ",);#item);
-                print(hpHeadsUp);
+                    enemyFight(enemyName);
                 
             if battleUserPrompt == "Flee":
                 fleeChancePlayer = playerChar.stats[1]*13
@@ -113,17 +114,21 @@ def main():
                     return;
                 else:
                     print("You failed to run away!");
+                    enemyFight(enemyName);
+
+
     def enemyFight(enemy):
         print(enemy.name, "is getting ready to attack!");
         spellChance = random.random();
         print(spellChance);
+        enemySpellLen = len(enemy.spellCache);
         if spellChance > 0.3:
             print("The", enemy.name, "attacks! and deals", enemy.damage, "points of physical damage!");
         else:
             print("The", enemy.name, "prepares to cast a spell!");
             #IF YOU HAVENT! make sure to implement an array containing at least one spell named "spellCache" which
             #holds an enemies individual spells
-            print("The", enemy.name, "casts", enemy.spellCache[random.randint(0,5)]);
+            print("The", enemy.name, "casts", enemy.spellCache[random.randint(0,enemySpellLen)]);
             #if enemy.spellCache[random.randint(0,3) == null or enemy.spellCache[random.randint(0,3) == undefined:
                 #castedSpell = enemy.spellCache[0];
                 #print("bro")
@@ -131,8 +136,8 @@ def main():
     def talkingStart():
         print("hello!");
     
-    test1 = input("sim battle or sim talking: ").capitalize();
-    if test1 == "Battle":
+    test1 = input("Explore or sim talking: ").capitalize();
+    if test1 == "Explore":
         battleStart(enemySelect());
     if test1 == "Talking":
         talkingStart();
