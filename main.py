@@ -48,11 +48,11 @@ def main():
     init = input("Hello Brave Champion! make your name known: ").capitalize();
     classInspect = input("Now, Brave Champion!, choose your class (Warrior, Mage, Thief): ").capitalize();
     if classInspect == "Warrior":
-        playerChar = Hero(init, [], warriorStats,[]);
+        playerChar = Hero(init, [], warriorStats,['b']);
     if classInspect == "Mage":
-        playerChar = Hero(init, [], mageStats);
+        playerChar = Hero(init, [], mageStats,['Firebolt','Icebolt','Aegis','Heal','Smogon','Draconic Breath']);
     if classInspect == "Thief":
-        playerChar = Hero(init, [], thiefStats);
+        playerChar = Hero(init, [], thiefStats,['Shadowsneak','Shadowstep','Shadowform Bow']);
 
     print(playerChar.name, playerChar.inventory, playerChar.stats);
 
