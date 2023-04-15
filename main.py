@@ -3,7 +3,8 @@
 import random
 import enemies
 
-lootTable = []
+lootTable = [];
+lastLevel = [];
 
 #stats according to index are [str, dex, int, lck, hp, mp, resil]
 
@@ -12,11 +13,12 @@ mageStats = [1,3,5,1,5,15,2];
 thiefStats = [3,5,2,4,4,17,4];
  
 class Hero:
-    def __init__(self, name, inventory, stats, spells):
+    def __init__(self, name, inventory, stats, spells,xp):
         self.name = name;
         self.inventory = inventory;
         self.stats = stats;
         self.spells = spells;
+        self.xp = xp;
 
 #class FighterType:
    # def __init__(self,warrior,mage,theif):
@@ -27,11 +29,13 @@ def main():
     init = input("Hello Brave Champion! make your name known: ").capitalize();
     classInspect = input("Now, Brave Champion!, choose your class (Warrior, Mage, Thief): ").capitalize();
     if classInspect == "Warrior":
-        playerChar = Hero(init, [], warriorStats,['b']);
+        playerChar = Hero(init, [], warriorStats,['b'],0);
     if classInspect == "Mage":
-        playerChar = Hero(init, [], mageStats,['Firebolt','Icebolt','Aegis','Heal','Smogon','Draconic Breath']);
+        playerChar = Hero(init, [], mageStats,['Firebolt','Heal'],0);
+    #,'Icebolt','Aegis','Smogon','Draconic Breath' other spells to learn as you level up
     if classInspect == "Thief":
-        playerChar = Hero(init, [], thiefStats,['Shadowsneak','Shadowstep','Shadowform Bow']);
+        playerChar = Hero(init, [], thiefStats,['Shadowsneak','Shadowstep'],0);
+    # , 'Shadowform Bow' - other spells to learnas you level up
 
     print(playerChar.name, playerChar.inventory, playerChar.stats);
 
