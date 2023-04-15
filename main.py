@@ -56,24 +56,26 @@ def main():
             return enemies.gob
             
     def battleStart(enemyName):
-        while enemyName.health > 0:
+        while enemyName.stats[4] > 0:
             #print(enemyName)
             hpHeadsUp = print(playerChar.name,":", playerChar.stats[4],"HP");
             battleUserPrompt = input("What would you like to do? (Attack, Spell, Inventory, Flee): ").capitalize();
             if battleUserPrompt == "Attack":
-                print(enemyName.health);
-                damagedEnemyPhys = enemyName.health - (playerChar.stats[0]*2)
+                print(enemyName.stats[4]);
+                damagedEnemyPhys = enemyName.stats[4] - (playerChar.stats[0]*2)
                 print(damagedEnemyPhys);
-                enemyName.health = damagedEnemyPhys;
-                print(enemyName.health);
-                enemyFight(enemyName);
+                enemyName.stats[4] = damagedEnemyPhys;
+                print(enemyName.stats[4]);
+                if enemyName.stats[4] > 0:
+                    enemyFight(enemyName);
             if battleUserPrompt == "Spell":
                 if playerChar.stats[2] == 0:
                     print("Warrior... I hate to have to be the one to break it to you, but you do not have a knack for the arcane.");
                 else:
                     spellBattlePrompt = input("Which Spell will you cast?: ").capitalize();
-                    damagedEnemyInt = playerChar.stats[2]*2 - enemyName.health;
-                    enemyFight(enemyName);
+                    damagedEnemyInt = playerChar.stats[2]*2 - enemyName.stats[4];
+                    if enemyName.stats[4] > 0:
+                        enemyFight(enemyName);
             
             if battleUserPrompt == "Inventory":
                 print(playerChar.inventory)
@@ -95,7 +97,7 @@ def main():
                     print("You failed to run away!");
                     enemyFight(enemyName);
 
-#replace every instance of damage and health with their requisite stats
+#replace every instance of damage and stats[4] with their requisite stats
 
     def enemyFight(enemy):
         print(enemy.name, "is getting ready to attack!");
@@ -103,15 +105,12 @@ def main():
         print(spellChance);
         enemySpellLen = len(enemy.spellCache);
         if spellChance > 0.3:
-            print("The", enemy.name, "attacks! and deals", enemy.damage, "points of physical damage!");
+            print("The", enemy.name, "attacks! and deals", enemy.stats[0], "points of physical damage!");
         else:
             print("The", enemy.name, "prepares to cast a spell!");
             #IF YOU HAVENT! make sure to implement an array containing at least one spell named "spellCache" which
             #holds an enemies individual spells
-            print("The", enemy.name, "casts", enemy.spellCache[random.randint(0,enemySpellLen)]);
-            #if enemy.spellCache[random.randint(0,3) == null or enemy.spellCache[random.randint(0,3) == undefined:
-                #castedSpell = enemy.spellCache[0];
-                #print("bro")
+            print("The", enemy.name, "casts", enemy.spellCache[random.randint(0,enemySpellLen-1)]);
         
     def talkingStart():
         print("hello!");

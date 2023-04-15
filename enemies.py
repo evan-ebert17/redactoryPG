@@ -11,7 +11,7 @@ class Enemy:
 
 # enemy details are as follows ("Name", [gold drop, loot-table], [stat table],[spell list]);
 # stat table reads as [str, dex, int, lck, hp, mp, resil];
-# str corresponds to physical damage, int is magical dmg, lck is crit chance, hp, mp, resil is any bonus resistances (such as flame for dragons);  
+# str corresponds to physical damage, int is magical dmg, lck is crit chance, hp, mp, resil is any bonus resistances (such as fire for dragons);  
 
 slime = Enemy("Slime",[random.randint(2,5),"Sludge","Rusted Armor"],[random.randint(2,4),5,5,2,15,5,["water","poison"]],["Acid Spray"])
 
