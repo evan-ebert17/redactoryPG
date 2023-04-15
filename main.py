@@ -2,6 +2,7 @@
 
 import random
 import enemies
+import enemyTurn
 
 lootTable = [];
 lastLevel = [];
@@ -71,7 +72,7 @@ def main():
                 enemyName.stats[4] = damagedEnemyPhys;
                 print(enemyName.stats[4]);
                 if enemyName.stats[4] > 0:
-                    enemyFight(enemyName);
+                    enemyTurn.enemyFight(enemyName);
             if battleUserPrompt == "Spell":
                 if playerChar.stats[2] == 0:
                     print("Warrior... I hate to have to be the one to break it to you, but you do not have a knack for the arcane.");
@@ -79,7 +80,7 @@ def main():
                     spellBattlePrompt = input("Which Spell will you cast?: ").capitalize();
                     damagedEnemyInt = playerChar.stats[2]*2 - enemyName.stats[4];
                     if enemyName.stats[4] > 0:
-                        enemyFight(enemyName);
+                        enemyTurn.enemyFight(enemyName);
             
             if battleUserPrompt == "Inventory":
                 print(playerChar.inventory)
@@ -88,7 +89,7 @@ def main():
                     print("you don't got nothin'");
                 else:
                     print("you used the ",);#item);
-                    enemyFight(enemyName);
+                    enemyTurn.enemyFight(enemyName);
                 
             if battleUserPrompt == "Flee":
                 fleeChancePlayer = playerChar.stats[1]*13
@@ -99,22 +100,7 @@ def main():
                     return;
                 else:
                     print("You failed to run away!");
-                    enemyFight(enemyName);
-
-#replace every instance of damage and stats[4] with their requisite stats
-
-    def enemyFight(enemy):
-        print(enemy.name, "is getting ready to attack!");
-        spellChance = random.random();
-        print(spellChance);
-        enemySpellLen = len(enemy.spellCache);
-        if spellChance > 0.3:
-            print("The", enemy.name, "attacks! and deals", enemy.stats[0], "points of physical damage!");
-        else:
-            print("The", enemy.name, "prepares to cast a spell!");
-            #IF YOU HAVENT! make sure to implement an array containing at least one spell named "spellCache" which
-            #holds an enemies individual spells
-            print("The", enemy.name, "casts", enemy.spellCache[random.randint(0,enemySpellLen-1)]);
+                    enemyTurn.enemyFight(enemyName);
         
     def talkingStart():
         print("hello!");
