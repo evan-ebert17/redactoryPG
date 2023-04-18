@@ -23,4 +23,8 @@ drag = Enemy("Draygern",[random.randint(250,500),"Dragon Scale","Glistening Eyeb
 
 thief = Enemy("Thief",[random.randint(10,25),"Serrated Dagger","Smokebomb"],[random.randint(7,12),8,7,6,27,25,["lightning"]],["Shadowsneak (evaision up, speed down)","Shadowstep (speed up but slight dmg down)","Shadowform Bow (special dmg bow, slight piercing dmg)"]);
 
+#water elemental WoW
 elemental = Enemy("Elemental",[random.randint(30,75),"Elemental Crystal","Crushed Powder"],[random.randint(5,20),6,12,2,45,49,["poison","water"]],["Frozen Shackle (speed way down + frost dmg)","Water Spear (physical dmg)"]);
+
+#think wall-masters from LoZ
+grabbler = Enemy("Grabbler",[random.randint(25,45),"Fingernail","Runic Inscription","Pair of Keys"],[random.randint(10,19),6,12,2,45,49,["water"],["Paralyzing Grip","Nail Shot","Taunt (wags its finger at you)"]])
