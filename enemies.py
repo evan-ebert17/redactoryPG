@@ -9,7 +9,7 @@ class Enemy:
         self.stats = stats;
         self.spellCache = spellCache;
 
-# enemy details are as follows ("Name", [gold drop, loot-table], [stat table],[spell list]);
+# enemy details are as follows ("Name", [gold drop, loot-table], [stat table.[resistances]],[spell list]);
 # stat table reads as [str, dex, int, lck, hp, mp, resil];
 # str corresponds to physical damage, int is magical dmg, lck is crit chance, hp, mp, resil is any bonus resistances (such as fire for dragons);  
 
@@ -27,4 +27,4 @@ thief = Enemy("Thief",[random.randint(10,25),"Serrated Dagger","Smokebomb"],[ran
 elemental = Enemy("Elemental",[random.randint(30,75),"Elemental Crystal","Crushed Powder"],[random.randint(5,20),6,12,2,45,49,["poison","water"]],["Frozen Shackle (speed way down + frost dmg)","Water Spear (physical dmg)"]);
 
 #think wall-masters from LoZ
-grabbler = Enemy("Grabbler",[random.randint(25,45),"Fingernail","Runic Inscription","Pair of Keys"],[random.randint(10,19),6,12,2,45,49,["water"],["Paralyzing Grip","Nail Shot","Taunt (wags its finger at you)"]])
+grabbler = Enemy("Grabbler",[random.randint(25,45),"Fingernail","Runic Inscription","Pair of Keys"],[random.randint(10,19),6,12,2,45,49,["water"]],["Paralyzing Grip","Nail Shot","Taunt (wags its finger at you)"]);
