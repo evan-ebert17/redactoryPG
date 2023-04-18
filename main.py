@@ -4,6 +4,7 @@ import random
 import enemies
 import rooms
 #import enemyTurn
+import enemySelector
 import battleSystem
 import playerStats
 
@@ -30,7 +31,7 @@ def main():
     if test1 == "explore":
         print(rooms.TempleRoom1.description);
         print(playerChar);
-        #battleSystem.battleStart(playerChar,enemySelect());
+        battleSystem.battleStart(playerChar,enemySelector.enemySelect());
     if test1 == "talking":
         talkingStart();
 

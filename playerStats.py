@@ -1,3 +1,5 @@
+import json
+
 lootTable = [];
 #lastLevel = [];
 
@@ -53,6 +55,45 @@ class Hero:
 
     def exp_to_next_level(self):
         return 112 * self.level
+    
+    #converts 'Hero' to a dictionary that can be serialized as JSON
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "inventory": self.inventory,
+            "stats": self.stats,
+            "spells": self.spells,
+            "xp": self.xp,
+            "level": self.level,
+            "player_class": self.player_class,
+        }
+
+    #creates new 'Hero' object from a dictionary containing the JSON data
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            data["name"],
+            data["inventory"],
+            data["stats"],
+            data["spells"],
+            data["xp"],
+            data["player_class"],
+        )
+
+    #writes the JSON-serializable dictionary to a file using 'json.dump' function
+    def save(self, filename):
+        with open(filename, "w") as file:
+            json.dump(self.to_dict(), file)
+        print(f"Game saved to {filename}")
+
+    #reads the JSON data from the file using 'json.load' function and creates a new 'Hero' object using 'from.dict'
+    @classmethod
+    def load(cls, filename):
+        with open(filename, "r") as file:
+            data = json.load(file)
+        hero = cls.from_dict(data)
+        print(f"Game loaded from {filename}")
+        return hero
 
 # Example usage
 

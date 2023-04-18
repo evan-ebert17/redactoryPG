@@ -1,0 +1,3 @@
+import rooms
+
+currentRoom = [];
