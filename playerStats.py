@@ -17,6 +17,50 @@ class Hero:
         self.player_class = player_class;
         self.xp = xp
         self.level = 1  # Add a level attribute
+        self.equipped_items = {
+            "head": None,
+            "torso": None,
+            "legs":None,
+            "footwear":None,
+            "hands":None,
+            "weaponRight":None,
+            "weaponLeft":None
+        }
+
+    def equip(self, item):
+        item_type = item.item_type
+        #if the item you are trying to equpid is not a valid slot type, (head, torso etc), you cannot equip it, else...
+        if item_type not in self.equipped_items:
+            print(f"You cannot equip the {item.name}.");
+    
+        #this is an already equpped item
+        old_item = self.equipped_items[item_type]
+        if old_item:
+            #probably remove this line later for brevity sakes.
+            print(f"Unequipping {old_item.name}.")
+            self.unequip(old_item)
+
+        print(f"Equipping {item.name}.")
+        self.equipped_items[item_type] = item
+        self.apply_stat_effects(item.stat_effects)
+
+    def unequip(self, item):
+        item_type = item.item_type
+        if self.equipped_items[item_type] != item:
+            print(f"{item.name} is not currently equipped.")
+            return
+
+        print(f"Unequipping {item.name}.")
+        self.equipped_items[item_type] = None
+        self.remove_stat_effects(item.stat_effects)
+
+    def apply_stat_effects(self, stat_effects):
+        for stat, effect in stat_effects.items():
+            self.stats[stat] += effect
+
+    def remove_stat_effects(self, stat_effects):
+        for stat, effect in stat_effects.items():
+            self.stats[stat] -= effect
 
     def gain_experience(self, exp_points):
         self.xp += exp_points
