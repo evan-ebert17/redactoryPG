@@ -26,6 +26,11 @@ class Hero:
             "weaponRight":None,
             "weaponLeft":None
         }
+    
+    def lookInventory(self):
+        print("Inventory: ")
+        for item in self.inventory:
+            print(item)
 
     def equip(self, item):
         item_type = item.item_type

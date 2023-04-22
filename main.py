@@ -30,12 +30,20 @@ def main():
     
     test1 = input("Explore or sim talking: ").lower();
     if test1 == "explore":
+        print(playerChar.inventory);
         current_room_index = 1;
+        first_run = True
         while True:
             current_room = rooms.rooms_dict[current_room_index];
-            print(current_room.description);
+
+            if first_run:
+                print(current_room.description)
+                first_run = False
+
+            #current_room = rooms.rooms_dict[current_room_index];
             user_input = input("What would you like to do?: ");
             new_room_index = textParser.parse_input(user_input, playerChar, current_room)
+
             if new_room_index is not None:
                 current_room_index = new_room_index
         #print(playerChar);

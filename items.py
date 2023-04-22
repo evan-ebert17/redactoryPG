@@ -1,7 +1,7 @@
 import playerStats
 
 class Item:
-    def __init__(self, name, description, item_type, stat_effects=None,function=None, use_message=None):
+    def __init__(self, name, description, item_type, stat_effects=None,use_message=None,function=None):
         self.name = name
         self.description = description
         self.item_type = item_type
@@ -27,12 +27,15 @@ class Item:
         hero.stats[4] += 10  # Increase HP by 10
         print(f"{hero.name}'s HP is healed by 10.")
 
+    def unlock(self):
+        print("wip");
+
 
 
 #create items here
 
-potion = Item("Health Potion", "A potion that restores 10 HP.", Item.heal, "You drank the health potion.")
-key = Item("Red Key", "A red key that might open something.",None,"You inserted the key.");
-rock = Item("Rock","Just an unremarkable rock.",None,)
+potion = Item("Health Potion", "A potion that restores 10 HP.", None, None,"You drank the health potion.",Item.heal);
+key = Item("Red Key", "A red key that might open something.",None,None, None,"You inserted the key.");
+rock = Item("Rock","Just an unremarkable rock.",None,None,None,None);
 ironHelm = Item("Iron Helmet","An iron helmet with two horns, one of which is broken.",item_type="head", stat_effects={"str":1,"hp":2})
-rustySword = Item("Rusted Sword","A sword covered in rust. It has seen better days.",item_type="weapon",stat_effects={"str":1})
+rustySword = Item("Rusted Sword","A sword covered in rust. Sturdy, but it has seen better days.",item_type="weapon",stat_effects={"str":1})

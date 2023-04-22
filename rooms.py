@@ -26,7 +26,9 @@ class Room:
                                                                                 #S
 rooms_dict = {
     #spawn+interactTile    
-    1: Room({"north":2},"forest",1,[items.rock,items.rustySword,"Dagger","Wooden Staff","Backpack",items.potion],
+    1: Room({"north":2},"forest",1,[items.rock,items.rustySword,
+                                    #"Dagger","Wooden Staff","Backpack",
+                                    items.potion],
                  "As your eyes begin to open and your senses come about you, you find yourself in an abandoned stone Temple. "
                  "Its walls cracked and its ceilings collapsed in many places, the once-majestic structure now lies in ruin. "
                  "It's as if time has stood still in this abandoned temple, as now the scent of decay and mustiness permeates the air. " 
@@ -34,11 +36,15 @@ rooms_dict = {
                  "It is hard to imagine a place, as grand as this, is all but helpless against the elements.",
                  'spawnPoint'),
     #genericTile
-    2: Room({"south":1,"west":3,"east":65},"forest",2,["Rock","Log","Weeds"],
+    2: Room({"south":1,"west":3,"east":65},"forest",2,[items.rock,
+                                                       #"Rock","Log","Weeds"
+                                                       ],
                         'You head north to find an opening.',None),
                  
     #interactTile
-    65: Room({"east":66,"west":2},"forest",65,["Bottle","Note","Vase","Tent"],
+    65: Room({"east":66,"west":2},"forest",65,[items.rock,
+                                               #"Bottle","Note","Vase","Tent"
+                                               ],
                           "As you head east, you come across what seems to be the remnants of a campsite. "
                           "There is a weather-worn tent with an extinguished camp fire nearby. "
                           "The area is quiet and still, quite still in fact, and still quite quiet, still things could be quite worse...",None),

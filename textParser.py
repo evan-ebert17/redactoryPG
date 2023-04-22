@@ -1,16 +1,22 @@
 import items
 import rooms
+import playerStats
 
 def parse_input(user_input,player,current_room):
         # Split the user input into words
         words = user_input.lower().strip().split()
 
         # Remove common articles from the input
-        articles = {"the", "a", "an"}
+        articles = {"the", "a", "an","at","to"}
         words = [word for word in words if word not in articles]
 
+        if len(words) == 1:
+            command = words[0]
+            if command == "inventory":
+                player.lookInventory()
+        
         # Check for valid commands and execute the corresponding action
-        if len(words) >= 2:
+        elif len(words) >= 2:
             command, target = words[0], " ".join(words[1:])
 
             if command == "go":
@@ -35,7 +41,10 @@ def parse_input(user_input,player,current_room):
                     item_to_use.use(player)
                 else:
                     print(f"You don't have a {target}.")
-
+            
+            elif command == "look" and target == "inventory":
+                player.lookInventory()
+            
             elif command == "look":
                 item_to_look = current_room.findItem(target);
                 if item_to_look:
