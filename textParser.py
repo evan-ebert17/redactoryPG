@@ -45,6 +45,9 @@ def parse_input(user_input,player,current_room):
             elif command == "look" and target == "inventory":
                 player.lookInventory()
             
+            elif command == "look" and target == "inventory":
+                player.lookInventory()
+
             elif command == "look":
                 item_to_look = current_room.findItem(target);
                 if item_to_look:

@@ -10,6 +10,8 @@ import enemySelector
 import battleSystem
 import playerStats
 
+#640x360 aspect ratio, 320x180, 160x90 and so on
+
 def main():
     init = input("Hello Brave Champion! make your name known: ").capitalize();
     classInspect = input("Now, Brave Champion!, choose your class (Warrior, Mage, Thief): ").lower();
