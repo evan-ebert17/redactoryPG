@@ -1,4 +1,6 @@
+#if this has an error ignore it, it works...
 import pygame
+############################################
 import sys
 
 pygame.init()
@@ -9,12 +11,12 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Scrolling Text Box Example")
 
 # Text settings
-FONT = pygame.font.Font(None, 24)
+FONT = pygame.font.Font("VT323-Regular.ttf", 21)
 TEXT_COLOR = (255, 255, 255)
-TEXT = """ "As your eyes begin to open and your senses come about you, you find yourself in an abandoned stone Temple. "\n
-                 "Its walls cracked and its ceilings collapsed in many places, the once-majestic structure now lies in ruin. "\n
-                 "It's as if time has stood still in this abandoned temple, as now the scent of decay and mustiness permeates the air. " \n
-                 "The only source of light shimmers down as weak rays of sunshine filtering through the broken ceiling, casting a dusty glow on the crumbling stone pillars. "\n
+TEXTMAIN = """ "As your eyes begin to open and your senses come about you, you find yourself in an abandoned stone Temple."\n
+                 "Its walls cracked and its ceilings collapsed in many places, the once-majestic structure now lies in ruin."\n
+                 "It's as if time has stood still in this abandoned temple, as now the scent of decay and mustiness permeates the air." \n
+                 "The only source of light shimmers down as weak rays of sunshine filtering through the broken ceiling, casting a dusty glow on the crumbling stone pillars."\n
                  "It is hard to imagine a place, as grand as this, is all but helpless against the elements."\n
 """
 
@@ -65,7 +67,10 @@ def main():
     clock = pygame.time.Clock()
     scroll = 0
 
-    text_box = TextBox(50, 260, 540, 57, TEXT)
+    #userText = "> ";
+
+    textDescriptions = TextBox(50, 260, 540, 57, TEXTMAIN)
+    #userInput = TextBox(50, 50, 50,50,userText)
 
     while True:
         dt = clock.tick(30)
@@ -80,6 +85,17 @@ def main():
                     scroll -= 10
                 elif event.y < 0:
                     scroll += 10
+            #if event.type == pygame.KEYDOWN:
+  
+            # Check for backspace
+            #    if event.key == pygame.K_BACKSPACE:
+                # get text input from 0 to -1 i.e. end.
+            #        userText = userText[:-1]
+  
+            # Unicode standard is used for string
+            # formation
+            #    else:
+            #        userText += event.unicode
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
@@ -87,11 +103,13 @@ def main():
         if keys[pygame.K_DOWN]:
             scroll += 5
 
-        scroll = max(0, min(scroll, len(text_box.rendered_text) * FONT.get_linesize() - text_box.rect.height))
+        scroll = max(0, min(scroll, len(textDescriptions.rendered_text) * FONT.get_linesize() - textDescriptions.rect.height))
 
         screen.fill((0, 0, 0))
-        text_box.draw(screen, scroll)
-        pygame.draw.rect(screen, (255, 255, 255), text_box.rect, 2)
+        textDescriptions.draw(screen, scroll)
+        #userInput.draw(screen,None)
+        pygame.draw.rect(screen, (255, 255, 255), textDescriptions.rect, 2)
+        #pygame.draw.rect(screen, (255,255,255), userInput.rect,2)
         pygame.display.flip()
 
 

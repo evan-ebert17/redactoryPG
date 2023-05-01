@@ -31,6 +31,9 @@ class Hero:
         print("Inventory: ")
         for item in self.inventory:
             print(item)
+    
+    #def addToInventory(self):
+    #    for 
 
     def equip(self, item):
         item_type = item.item_type

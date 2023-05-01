@@ -32,7 +32,6 @@ def main():
     
     test1 = input("Explore or sim talking: ").lower();
     if test1 == "explore":
-        print(playerChar.inventory);
         current_room_index = 1;
         first_run = True
         while True:

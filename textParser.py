@@ -30,8 +30,16 @@ def parse_input(user_input,player,current_room):
                     return current_room.index;
                 
             elif command == "take":
-                #take(target)
-                print('h');
+                #next is "finding 1st item that matches";
+                #reads as: the first item in the room that matches the item you're calling in the chat box gets used, IF it can be, otherwise nothing happens.
+                item_to_take = next((i for i in current_room.items if i.name.lower() == target), None);
+                if item_to_take:
+                    print(f"You took the {target.capitalize()}.")
+                    #item_to_take.take(player)
+                    player.inventory.insert(0,item_to_take);
+                    current_room.items.remove(item_to_take)
+                else:
+                    print(f"There is no {target} to take.");
             
             elif command == "use":
                 #next is "finding 1st item that matches";
@@ -40,9 +48,9 @@ def parse_input(user_input,player,current_room):
                 if item_to_use:
                     item_to_use.use(player)
                 else:
-                    print(f"You don't have a {target}.")
+                    print(f"You don't have a {target}.");
             
-            elif command == "look" and target == "inventory":
+            elif command == "look" and target == "room":
                 player.lookInventory()
             
             elif command == "look" and target == "inventory":
