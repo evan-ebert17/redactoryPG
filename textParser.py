@@ -51,7 +51,7 @@ def parse_input(user_input,player,current_room):
                     print(f"You don't have a {target}.");
             
             elif command == "look" and target == "room":
-                player.lookInventory()
+                print(current_room.specificDescription)
             
             elif command == "look" and target == "inventory":
                 player.lookInventory()

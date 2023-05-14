@@ -38,7 +38,7 @@ def main():
             current_room = rooms.rooms_dict[current_room_index];
 
             if first_run:
-                print(current_room.description)
+                print(current_room.entryDescription)
                 first_run = False
 
             #current_room = rooms.rooms_dict[current_room_index];
