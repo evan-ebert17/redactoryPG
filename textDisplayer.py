@@ -1,6 +1,6 @@
 import rooms
 
-currentDescription = [rooms.Room.entryDescription]
+currentDescription = []
 
 for letter in currentDescription:
     print(letter)
