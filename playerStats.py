@@ -37,7 +37,7 @@ class Hero:
 
     def equip(self, item):
         item_type = item.item_type
-        #if the item you are trying to equpid is not a valid slot type, (head, torso etc), you cannot equip it, else...
+        #if the item you are trying to equiped is not a valid slot type, (head, torso etc), you cannot equip it, else...
         if item_type not in self.equipped_items:
             print(f"You cannot equip the {item.name}.");
     

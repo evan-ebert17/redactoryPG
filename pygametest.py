@@ -15,7 +15,7 @@ FONT = pygame.font.Font("VT323-Regular.ttf", 21)
 TEXT_COLOR = (255, 255, 255)
 TEXTMAIN = """ "As your eyes begin to open and your senses come about you, you find yourself in an abandoned stone Temple."\n
                  "Its walls cracked and its ceilings collapsed in many places, the once-majestic structure now lies in ruin."\n
-                 "It's as if time has stood still in this abandoned temple, as now the scent of decay and mustiness permeates the air." \n
+                 "It is as if time has stood still in this abandoned temple, as now the scent of decay and mustiness permeates the air." \n
                  "The only source of light shimmers down as weak rays of sunshine filtering through the broken ceiling, casting a dusty glow on the crumbling stone pillars."\n
                  "It is hard to imagine a place, as grand as this, is all but helpless against the elements."\n
 """
