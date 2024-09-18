@@ -9,7 +9,7 @@ mageStats = [1, 3, 5, 1, 14, 15, 2]
 thiefStats = [3, 5, 2, 4, 15, 17, 4]
 
 class Hero:
-    def __init__(self, name, inventory, stats, spells, player_class, xp):
+    def __init__(self, name, inventory, stats, spells, player_class, xp,current_room=None):
         self.name = name
         self.inventory = inventory
         self.stats = stats
@@ -17,6 +17,7 @@ class Hero:
         self.player_class = player_class;
         self.xp = xp
         self.level = 1  # Add a level attribute
+        self.current_room = current_room;
         self.equipped_items = {
             "head": None,
             "torso": None,
@@ -108,46 +109,39 @@ class Hero:
     def exp_to_next_level(self):
         return 112 * self.level
     
-    #converts 'Hero' to a dictionary that can be serialized as JSON
-    def to_dict(self):
-        return {
+
+def save(self, filename):
+        # Convert the object into a dictionary that can be saved in JSON format
+        save_data = {
             "name": self.name,
             "inventory": self.inventory,
             "stats": self.stats,
             "spells": self.spells,
+            "player_class": self.player_class,
             "xp": self.xp,
             "level": self.level,
-            "player_class": self.player_class,
+            "equipped_items": self.equipped_items,
+            "current_room": self.current_room
         }
+        with open(filename, 'w') as file:
+            json.dump(save_data, file)
 
-    #creates new 'Hero' object from a dictionary containing the JSON data
-    @classmethod
-    def from_dict(cls, data):
-        return cls(
-            data["name"],
-            data["inventory"],
-            data["stats"],
-            data["spells"],
-            data["xp"],
-            data["player_class"],
-        )
-
-    #writes the JSON-serializable dictionary to a file using 'json.dump' function
-    def save(self, filename):
-        with open(filename, "w") as file:
-            json.dump(self.to_dict(), file)
-        print(f"Game saved to {filename}")
-
-    #reads the JSON data from the file using 'json.load' function and creates a new 'Hero' object using 'from.dict'
-    @classmethod
-    def load(cls, filename):
-        with open(filename, "r") as file:
+@classmethod
+def load(cls, filename):
+        # Load the saved data from the file
+        with open(filename, 'r') as file:
             data = json.load(file)
-        hero = cls.from_dict(data)
-        print(f"Game loaded from {filename}")
-        return hero
-
-# Example usage
-
-# This will trigger a level-up
-# player.gain_experience(200)
+            # Return an instance of Hero using the saved data
+            return cls(
+                name=data["name"],
+                inventory=data["inventory"],
+                stats=data["stats"],
+                spells=data["spells"],
+                player_class=data["player_class"],
+                xp=data["xp"],
+                current_room=data["current_room"]
+            )
+        
+# def enter_room(self, room):
+#         self.current_room = room
+#         print(room.entryDescription)
