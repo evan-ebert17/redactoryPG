@@ -2,68 +2,66 @@ import items
 import rooms
 import playerStats
 
-def parse_input(user_input,player,current_room):
-        # Split the user input into words
-        words = user_input.lower().strip().split()
+def parse_input(user_input, player, current_room):
+    # Initialize output variable
+    output = ""
 
-        # Remove common articles from the input
-        articles = {"the", "a", "an","at","to"}
-        words = [word for word in words if word not in articles]
+    # Split the user input into words
+    words = user_input.lower().strip().split()
 
-        if len(words) == 1:
-            command = words[0]
-            if command == "inventory":
-                player.lookInventory()
-        
-        # Check for valid commands and execute the corresponding action
-        elif len(words) >= 2:
-            command, target = words[0], " ".join(words[1:])
+    # Remove common articles from the input
+    articles = {"the", "a", "an", "at", "to"}
+    words = [word for word in words if word not in articles]
 
-            if command == "go":
-                # Check if the direction is valid for the current room
-                if target in current_room.possibleDirections:
-                # Update the current_room_index based on the transition mapping
-                    return current_room.possibleDirections[target]
-                else:
-                    print(f"You cannot go {target} from here.")
-                    # \/ keep an eye on this...
-                    return current_room.index;
-                
-            elif command == "take":
-                #next is "finding 1st item that matches";
-                #reads as: the first item in the room that matches the item you're calling in the chat box gets used, IF it can be, otherwise nothing happens.
-                item_to_take = next((i for i in current_room.items if i.name.lower() == target), None);
-                if item_to_take:
-                    print(f"You took the {target.capitalize()}.")
-                    #item_to_take.take(player)
-                    player.inventory.insert(0,item_to_take);
-                    current_room.items.remove(item_to_take)
-                else:
-                    print(f"There is no {target} to take.");
-            
-            elif command == "use":
-                #next is "finding 1st item that matches";
-                #reads as: the first item in your inventory that matches the item you're calling in the chat box gets used, IF it can be, otherwise nothing happens.
-                item_to_use = next((i for i in player.inventory if i.name.lower() == target), None);
-                if item_to_use:
-                    item_to_use.use(player)
-                else:
-                    print(f"You don't have a {target}.");
-            
-            elif command == "look" and target == "room":
-                print(current_room.specificDescription)
-            
-            elif command == "look" and target == "inventory":
-                player.lookInventory()
+    if len(words) == 1:
+        command = words[0]
+        if command == "inventory":
+            output += player.lookInventory()  # Assuming lookInventory returns output
 
-            elif command == "look":
-                item_to_look = current_room.findItem(target);
-                if item_to_look:
-                    print(item_to_look.description);
-                else:
-                    print("there is nothing, by your description, to look at.");
-            
+    # Check for valid commands and execute the corresponding action
+    elif len(words) >= 2:
+        command, target = words[0], " ".join(words[1:])
+
+        if command == "go":
+            # Check if the direction is valid for the current room
+            if target in current_room.possibleDirections:
+                return current_room.possibleDirections[target]  # Room transition is still returned
             else:
-                print("I do not believe you can do such a thing...");
+                output += f"You cannot go {target} from here.\n"
+                return current_room.index
+        
+        elif command == "take":
+            item_to_take = next((i for i in current_room.items if i.name.lower() == target), None)
+            if item_to_take:
+                output += f"You took the {target.capitalize()}.\n"
+                player.inventory.insert(0, item_to_take)
+                current_room.items.remove(item_to_take)
+            else:
+                output += f"There is no {target} to take.\n"
+        
+        elif command == "use":
+            item_to_use = next((i for i in player.inventory if i.name.lower() == target), None)
+            if item_to_use:
+                item_to_use.use(player)
+            else:
+                output += f"You don't have a {target}.\n"
+        
+        elif command == "look" and target == "room":
+            output += current_room.specificDescription + "\n"
+        
+        elif command == "look" and target == "inventory":
+            output += player.lookInventory()  # Assuming lookInventory returns output
+        
+        elif command == "look":
+            item_to_look = current_room.findItem(target)
+            if item_to_look:
+                output += item_to_look.description + "\n"
+            else:
+                output += "There is nothing, by your description, to look at.\n"
+        
         else:
-            print("Please enter a valid command.")
+            output += "I do not believe you can do such a thing...\n"
+    else:
+        output += "Please enter a valid command.\n"
+
+    return output
