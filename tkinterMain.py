@@ -79,7 +79,7 @@ def start_game():
     command_label = tk.Label(root, text="Type your command and press Enter")
     command_label.pack(pady=5)
 
-    update_text(current_room.entryDescription, text_box)
+    update_text(current_room.entryDescription, text_box, input_box)
 
 def load_game():
     global player, current_room, text_box
@@ -109,37 +109,75 @@ def save_game():
         player.save("save_game.json")
 
 def process_command(input_box, text_box):
-    global current_room
+    global is_scrolling, current_room
+
+    # If text is currently scrolling, skip the scrolling and show full message
+    if is_scrolling:
+        skip_scrolling(text_box, input_box)
+        return
 
     command = input_box.get().lower()
-    input_box.delete(0, tk.END)
+    input_box.delete(0, tk.END)  # Clear the text input after command is processed
 
-    # Get the output from textParser
+    # Get the returned output from textParser
     output = textParser.parse_input(command, player, current_room)
 
-    if output:
-        update_text(output, text_box)
+    if output:  # If there's output, display it in the text box
+        update_text(output, text_box, input_box)
 
 
 
-def update_text(message, text_box):
-    if text_box:
-        text_box.config(state=tk.NORMAL)
-        text_box.delete(1.0, tk.END)  # Clear the text box
+# Add a flag to track if text is currently being scrolled
+is_scrolling = False
+scrolling_message = ""
 
-        # Call the helper function to display text character by character
-        display_text(message, 0, text_box)
+def update_text(message, text_box, input_box):
+    global is_scrolling, scrolling_message
 
-def display_text(message, index, text_box):
-    # If we haven't reached the end of the message
+    # Disable input while text is scrolling
+    input_box.config(state=tk.DISABLED)
+
+    # Clear the text box
+    text_box.config(state=tk.NORMAL)
+    text_box.delete(1.0, tk.END)
+
+    # Set scrolling flag to True and store the message
+    is_scrolling = True
+    scrolling_message = message
+
+    # Call the helper function to display text character by character
+    display_text(message, 0, text_box, input_box)
+
+def display_text(message, index, text_box, input_box):
+    global is_scrolling
+
+    # If user presses enter during scrolling, instantly show the full message
+    if not is_scrolling:
+        return
+
     if index < len(message):
         # Insert the next character
         text_box.insert(tk.END, message[index])
         # Schedule the next character after a short delay
-        text_box.after(25, display_text, message, index + 1, text_box)
+        text_box.after(25, display_text, message, index + 1, text_box, input_box)
     else:
-        # Once done, disable the text box again
+        # Once done, enable the input box again and set the scrolling flag to False
         text_box.config(state=tk.DISABLED)
+        input_box.config(state=tk.NORMAL)
+        is_scrolling = False
+
+def skip_scrolling(text_box, input_box):
+    global is_scrolling, scrolling_message
+
+    if is_scrolling:
+        # If text is still scrolling, instantly print the entire message
+        text_box.config(state=tk.NORMAL)
+        text_box.delete(1.0, tk.END)  # Clear the box before printing full text
+        text_box.insert(tk.END, scrolling_message)  # Show full message
+        text_box.config(state=tk.DISABLED)
+        input_box.config(state=tk.NORMAL)
+        is_scrolling = False  # Set the scrolling flag to False
+
 
 def show_menu():
     global name_entry, class_entry
@@ -150,7 +188,7 @@ def show_menu():
     menu_frame = tk.Frame(root)
     menu_frame.pack()
 
-    tk.Label(menu_frame, text="Welcome to the RPG!").pack(pady=10)
+    tk.Label(menu_frame, text="Welcome to redactoryPG").pack(pady=10)
     tk.Button(menu_frame, text="Start New Game", command=start_new_game).pack(pady=10)
     tk.Button(menu_frame, text="Load Game", command=load_game).pack(pady=5)
     tk.Button(menu_frame, text="Exit", command=root.quit).pack(pady=5)
