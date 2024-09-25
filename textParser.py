@@ -16,21 +16,23 @@ def parse_input(user_input, player, current_room):
     if len(words) == 1:
         command = words[0]
         if command == "inventory":
-            output += player.lookInventory()  # Assuming lookInventory returns output
+            output += player.lookInventory()  # 
 
     # Check for valid commands and execute the corresponding action
     elif len(words) >= 2:
         command, target = words[0], " ".join(words[1:])
 
         if command == "go":
-            # Check if the direction is valid for the current room
             if target in current_room.possibleDirections:
-                return current_room.possibleDirections[target]  # Room transition is still returned
+                # Get the new room index from the direction and update current_room
+                new_room_index = current_room.possibleDirections[target]
+                current_room = rooms.rooms_dict[new_room_index]  # Update the room
+                return current_room.entryDescription  # Return the description of the new room
             else:
                 output += f"You cannot go {target} from here.\n"
                 return current_room.index
         
-        elif command == "take":
+        elif command == "take" or command == "get":
             item_to_take = next((i for i in current_room.items if i.name.lower() == target), None)
             if item_to_take:
                 output += f"You took the {target.capitalize()}.\n"

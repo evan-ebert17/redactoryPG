@@ -69,16 +69,36 @@ def start_game():
     for widget in root.winfo_children():
         widget.destroy()
 
+    # Create the text box for displaying room descriptions and game messages
     text_box = tk.Text(root, width=60, height=15, wrap=tk.WORD)
     text_box.pack(pady=10)
 
+    # Create the input box for user commands
     input_box = tk.Entry(root, width=40)
     input_box.pack(pady=10)
     input_box.bind("<Return>", lambda event: process_command(input_box, text_box))
 
+    # Create a label for instructions
     command_label = tk.Label(root, text="Type your command and press Enter")
     command_label.pack(pady=5)
 
+    # Create a frame for the buttons
+    button_frame = tk.Frame(root)
+    button_frame.pack(pady=10)
+
+    # Add a "Save Game" button
+    save_button = tk.Button(button_frame, text="Save Game", command=save_game)
+    save_button.grid(row=0, column=0, padx=5)
+
+    # Add an "Open Inventory" button
+    inventory_button = tk.Button(button_frame, text="Open Inventory", command=lambda: update_text(player.lookInventory(), text_box, input_box))
+    inventory_button.grid(row=0, column=1, padx=5)
+
+    # Add a "Main Menu" button
+    main_menu_button = tk.Button(button_frame, text="Main Menu", command=show_menu)
+    main_menu_button.grid(row=0, column=2, padx=5)
+
+    # Display the current room description
     update_text(current_room.entryDescription, text_box, input_box)
 
 def load_game():
@@ -111,19 +131,27 @@ def save_game():
 def process_command(input_box, text_box):
     global is_scrolling, current_room
 
-    # If text is currently scrolling, skip the scrolling and show full message
+    # If text is still scrolling, skip the scrolling and show full message
     if is_scrolling:
         skip_scrolling(text_box, input_box)
         return
 
     command = input_box.get().lower()
-    input_box.delete(0, tk.END)  # Clear the text input after command is processed
+    input_box.delete(0, tk.END)  # Clear the input after command
 
-    # Get the returned output from textParser
+    # Get the result from the textParser (the new room description or message)
     output = textParser.parse_input(command, player, current_room)
 
-    if output:  # If there's output, display it in the text box
+    if isinstance(output, str):  # Check if the output is a string (room description or message)
+        if "You cannot go" not in output:  # This check assumes "go" is only for movement
+            new_room_index = current_room.possibleDirections.get(command.split()[-1])
+            if new_room_index:  # Update the global current_room if there's a valid new room
+                current_room = rooms.rooms_dict[new_room_index]
         update_text(output, text_box, input_box)
+    else:
+        # If output is not a string, handle it (though it should always be a string after the fix)
+        update_text("Unknown command result.", text_box, input_box)
+
 
 
 
@@ -134,12 +162,10 @@ scrolling_message = ""
 def update_text(message, text_box, input_box):
     global is_scrolling, scrolling_message
 
-    # Disable input while text is scrolling
-    input_box.config(state=tk.DISABLED)
-
-    # Clear the text box
+    # Clear the text box and disable it to prevent any interaction while scrolling
     text_box.config(state=tk.NORMAL)
     text_box.delete(1.0, tk.END)
+    text_box.config(state=tk.DISABLED)
 
     # Set scrolling flag to True and store the message
     is_scrolling = True
@@ -151,17 +177,20 @@ def update_text(message, text_box, input_box):
 def display_text(message, index, text_box, input_box):
     global is_scrolling
 
-    # If user presses enter during scrolling, instantly show the full message
-    if not is_scrolling:
+    if not is_scrolling:  # Prevent re-displaying text if already skipped
         return
+
+    text_box.config(state=tk.NORMAL)  # Allow inserting characters
 
     if index < len(message):
         # Insert the next character
         text_box.insert(tk.END, message[index])
+        # Re-disable text box to prevent interaction
+        text_box.config(state=tk.DISABLED)
         # Schedule the next character after a short delay
         text_box.after(25, display_text, message, index + 1, text_box, input_box)
     else:
-        # Once done, enable the input box again and set the scrolling flag to False
+        # Once done, make the text box fully read-only and enable the input box again
         text_box.config(state=tk.DISABLED)
         input_box.config(state=tk.NORMAL)
         is_scrolling = False
@@ -174,8 +203,8 @@ def skip_scrolling(text_box, input_box):
         text_box.config(state=tk.NORMAL)
         text_box.delete(1.0, tk.END)  # Clear the box before printing full text
         text_box.insert(tk.END, scrolling_message)  # Show full message
-        text_box.config(state=tk.DISABLED)
-        input_box.config(state=tk.NORMAL)
+        text_box.config(state=tk.DISABLED)  # Re-disable text box
+        input_box.config(state=tk.NORMAL)  # Enable input box for commands
         is_scrolling = False  # Set the scrolling flag to False
 
 
