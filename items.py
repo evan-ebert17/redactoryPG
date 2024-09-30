@@ -30,6 +30,9 @@ class Item:
     def unlock(self):
         print("wip");
 
+    def open():
+        print("wip")
+
 
 
 #create items here
@@ -39,3 +42,9 @@ key = Item("Red Key", "A red key that might open something.",None,None, None,"Yo
 rock = Item("Rock","Just an unremarkable rock.",None,None,None,None);
 ironHelm = Item("Iron Helmet","An iron helmet with two horns, one of which is broken.",item_type="head", stat_effects={"str":1,"hp":2})
 rustySword = Item("Rusty Sword","A sword covered in rust. Sturdy, but it has seen better days.",item_type="weapon",stat_effects={"str":1})
+bloodiedBackpack = Item("Bloodied Backpack", 
+                        "A backpack of a less fortunate person, containing general adventuring supplies.", 
+                        "container",
+                        None, 
+                        "You rummaged through someone else's belongings... forshame", 
+                        Item.open)

@@ -5,7 +5,7 @@ import rooms  # Import rooms from rooms.py
 import textParser
 import items
 import enemySelector
-import battleSystem
+from battleSystem import battle_start
 import playerStats
 
 import tkinter as tk
@@ -84,8 +84,9 @@ def start_game():
 
     # Create the text box for displaying room descriptions and game messages
     text_box = tk.Text(main_frame, width=80, height=15, wrap=tk.WORD, bg='#0d0d0d', fg='#2a9772', 
-                       font=custom_font, insertbackground='#2a9772')
-    text_box.pack(pady=10, fill=tk.BOTH, expand=True)
+                       font=custom_font, insertbackground='#2a9772', )
+    #pady and padx for padding on main text box
+    text_box.pack(pady=10, padx= 10,fill=tk.BOTH, expand=True)
 
     # Create a frame for the input and buttons
     bottom_frame = tk.Frame(main_frame, bg='#0d0d0d')
@@ -147,32 +148,31 @@ def save_game():
         player.save("save_game.json")
 
 def process_command(input_box, text_box):
-    global is_scrolling, current_room
+    global current_room
 
-    # If text is still scrolling, skip the scrolling and show full message
-    if is_scrolling:
-        skip_scrolling(text_box, input_box)
+    command = input_box.get().lower().strip()
+    input_box.delete(0, 'end')
+
+    if not command:
         return
 
-    command = input_box.get().lower().strip()  # Strip spaces and get the command
-    input_box.delete(0, tk.END)  # Clear the input after command
-
-    # Ensure that command is not empty before proceeding
-    if not command:
-        return  # Do nothing if the command is empty
-
-    # Get the result from the textParser (the new room description or message)
+    # Handle room movement
     output = textParser.parse_input(command, player, current_room)
 
-    if isinstance(output, str):  # Check if the output is a string (room description or message)
-        if "You cannot go" not in output:  # This check assumes "go" is only for movement
-            new_room_index = current_room.possibleDirections.get(command.split()[-1])
-            if new_room_index:  # Update the global current_room if there's a valid new room
-                current_room = rooms.rooms_dict[new_room_index]
+    if isinstance(output, str):
+        new_room_index = current_room.possibleDirections.get(command.split()[-1])
+        if new_room_index:
+            current_room = rooms.rooms_dict[new_room_index]
+            
+            # Check if the room has a battle
+            if current_room.has_battle:
+                enemy = enemies.gob  # Example enemy; can be randomized
+                battle_start(player, enemy, text_box, input_box)
+                return  # Stop further processing when in a battle
+
         update_text(output, text_box, input_box)
     else:
-        # If output is not a string, handle it (though it should always be a string after the fix)
-        update_text("Unknown command result.", text_box, input_box)
+        update_text("Unknown command result.\n", text_box, input_box)
 
 
 
