@@ -56,11 +56,13 @@ rooms_dict = {
                             "When you look around the area, you notice that there are *gulp* quite a few blood stains about\n."
                             "In the foliage, you spot a bloodied backpack and momentarily mourn the loss of a fellow traveller.\n"
                             "Of course, due to the western noise, you quickly get over it.\n"
-                            "There is also a carving on a tree nearby."),
+                            "There is also a carving on a tree nearby.",None),
 
     #battleTile
-    4: Room({"north":5,"east":2},"battleBloodied",4,[],
-                                        "Oh GOD! There are enemies here!","You really know how to be urgent huh?","battle",hasBattle=True),
+    4: Room({"north":5,"east":2},"battleBloodied",4, #I want there to be a literal enemy flag dropped in the room
+                                                    [],
+                                        "Oh GOD! There are enemies here!",
+                                        "Well jeez, that was crazy huh?","battle",hasBattle=True),
 
     #genericTile
     #66:Room(),
