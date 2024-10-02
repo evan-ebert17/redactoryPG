@@ -27,6 +27,15 @@ def parse_input(user_input, player, current_room):
     elif len(words) >= 2:
         command, target = words[0], " ".join(words[1:])
 
+        direction_mapping = {
+            "left": "west",
+            "right": "east",
+            "forward": "north",
+            "back": "south",
+        }
+
+        target = direction_mapping.get(target,target);
+
         if command == "go":
             if target in current_room.possibleDirections:
                 # Get the new room index from the direction and add it to the response

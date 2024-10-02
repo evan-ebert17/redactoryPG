@@ -1,6 +1,7 @@
 import random
 import enemies
 import tkinter as tk
+import rooms;
 
 def calculate_damage(attacker, defender, attack_type="physical"):
     if attack_type == "physical":
