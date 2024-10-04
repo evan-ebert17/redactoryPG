@@ -8,6 +8,8 @@ import enemySelector
 from battleSystem import battle_start
 import playerStats
 import time
+from textUtils import update_text, skip_scrolling
+import textUtils
 
 import tkinter as tk
 from tkinter import messagebox
@@ -153,37 +155,29 @@ def battle_cutscene(room, text_box, input_box):
     
     def start_cutscene():
         # Display the room entry description
-        update_text(room.entryDescription + "\n", text_box, input_box)
+        update_text("Oh GOD! There are enemies here!" + "\n", text_box, input_box)
         
  # After another pause, start the battle
-        text_box.after(1700, lambda: prepare_for_battle(text_box, input_box))
+        text_box.after(2500, lambda: prepare_for_battle(text_box, input_box))
     
     start_cutscene()
 
 def prepare_for_battle(text_box, input_box):
     """Displays the 'Prepare for battle' message and then starts the battle after a delay."""
-    # Clear the text box before displaying the battle message
-    text_box.config(state=tk.NORMAL)
-    text_box.delete(1.0, tk.END)
-    update_text("Prepare for battle!\n",text_box,input_box)
-    text_box.config(state=tk.DISABLED)
+    # Display the battle preparation message without manually clearing the text box
+    update_text("Prepare for battle!\n", text_box, input_box)
 
     # Start the battle after another short delay
     text_box.after(1600, lambda: trigger_battle(text_box, input_box))
 
-from battleSystem import battle_start
-
 def trigger_battle(text_box, input_box):
-    """Clears the text box and starts the battle."""
-    text_box.config(state=tk.NORMAL)
-    text_box.delete(1.0, tk.END)
-    text_box.config(state=tk.DISABLED)
-
+    """Starts the battle without unnecessary text box clearing."""
     # Example enemy to start the battle
     if current_room.hasBattle:
         enemy = enemies.gob  # Example enemy; you can randomize or assign based on the room
-        battle_start(player, enemy, update_text,text_box, input_box)
+        battle_start(player, enemy, update_text, text_box, input_box)
         current_room.hasBattle = False  # Disable battle after it ends
+
 
 
 def process_command(input_box, text_box):
@@ -193,7 +187,7 @@ def process_command(input_box, text_box):
     input_box.delete(0, 'end')
 
     # If text is still scrolling, skip the scrolling instead of processing a command
-    if is_scrolling:
+    if textUtils.is_scrolling:
         skip_scrolling(text_box, input_box)
         return
 
@@ -217,21 +211,13 @@ def process_command(input_box, text_box):
         # Just display the message from the parser without updating the room
         update_text(response["message"] + "\n", text_box, input_box)
 
-
-
-
-
-
-
 # Add a flag to track if text is currently being scrolled
-is_scrolling = False
-scrolling_message = ""
 
 def toggle_inventory(text_box, input_box, button):
     global last_displayed_text, is_scrolling
 
     # Stop any ongoing scrolling before switching views
-    if is_scrolling:
+    if textUtils.is_scrolling:
         skip_scrolling(text_box, input_box)
 
     if button["text"] == "Open Inventory":
@@ -249,58 +235,6 @@ def toggle_inventory(text_box, input_box, button):
         update_text(last_displayed_text, text_box, input_box)
         # Change the button text back to "Open Inventory"
         button.config(text="Open Inventory")
-
-def update_text(message, text_box, input_box):
-    global is_scrolling, scrolling_message
-
-    # Stop scrolling if we are switching views or showing the inventory
-    if is_scrolling:
-        skip_scrolling(text_box, input_box)
-
-    # Clear the text box and disable it to prevent any interaction while scrolling
-    text_box.config(state=tk.NORMAL)
-    text_box.delete(1.0, tk.END)
-    text_box.config(state=tk.DISABLED)
-
-    # Set scrolling flag to True and store the full message
-    is_scrolling = True
-    scrolling_message = message
-
-    # Call the helper function to display text character by character
-    display_text(message, 0, text_box, input_box)
-
-def display_text(message, index, text_box, input_box):
-    global is_scrolling
-
-    if not is_scrolling:
-        return
-
-    text_box.config(state=tk.NORMAL)
-
-    if index < len(message):
-        # Insert the next character
-        text_box.insert(tk.END, message[index])
-        # Re-disable text box to prevent interaction
-        text_box.config(state=tk.DISABLED)
-        # Schedule the next character after a short delay
-        text_box.after(25, display_text, message, index + 1, text_box, input_box)
-    else:
-        # Once done, stop scrolling and make the text box read-only again
-        text_box.config(state=tk.DISABLED)
-        input_box.config(state=tk.NORMAL)
-        is_scrolling = False
-
-def skip_scrolling(text_box, input_box):
-    global is_scrolling, scrolling_message
-
-    if is_scrolling:
-        # If text is still scrolling, instantly print the entire message
-        text_box.config(state=tk.NORMAL)
-        text_box.delete(1.0, tk.END)  # Clear the box before printing full text
-        text_box.insert(tk.END, scrolling_message)  # Show full message
-        text_box.config(state=tk.DISABLED)  # Re-disable text box
-        input_box.config(state=tk.NORMAL)  # Enable input box for commands
-        is_scrolling = False  # Set the scrolling flag to False
 
 
 

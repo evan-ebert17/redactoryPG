@@ -61,7 +61,7 @@ rooms_dict = {
     #battleTile
     4: Room({"north":5,"east":2},"battleBloodied",4, #I want there to be a literal enemy flag dropped in the room
                                                     [],
-                                        "Oh GOD! There are enemies here!",
+                                        "The remnants of your hard fought battle.",
                                         "Well jeez, that was crazy huh?","battle",hasBattle=True),
 
     #genericTile

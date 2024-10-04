@@ -21,7 +21,7 @@ class Enemy:
 
 slime = Enemy("Slime",[random.randint(2,5),"Sludge","Rusted Armor"],2,4,[5,5,2,15,5,["water","poison"]],["Acid Spray"])
 
-gob = Enemy("Goblin",[random.randint(2,7),"Leather Scrap","Dagger"],4,8,[3,1,2,23,5,["poison"]],["Intimidating Leer (def down + 1 speed down)","Poison Gack (+1 dmg + 33% chance to poision)"]);
+gob = Enemy("Goblin",[random.randint(2,7),"Leather Scrap","Dagger"],4,8,[3,2,1,1,23,5,["poison"]],["Intimidating Leer (def down + 1 speed down)","Poison Gack (+1 dmg + 33% chance to poision)"]);
 
 ogre = Enemy("Ogre",[random.randint(13,37),"Giant Club","Bile"],12,18,[1,1,2,55,8,["water"]],["Polyphemus Rage (atk up)","Earthen Drag (phys dmg + AOE (if party))","Bile (hacks up... somethin' and lowers speed by 2"]);
 

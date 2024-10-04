@@ -1,7 +1,8 @@
 import random
 import enemies
 import tkinter as tk
-import rooms;
+import textUtils
+import rooms
 
 def calculate_damage(attacker, defender, attack_type="physical"):
     if attack_type == "physical":
@@ -9,7 +10,7 @@ def calculate_damage(attacker, defender, attack_type="physical"):
     elif attack_type == "magical":
         damage = random.randint(attacker.stats[2] - 2, attacker.stats[2] + 2)  # Intelligence-based attack
 
-    final_damage = max(damage - defender.stats[6], 0)  # Defender's resilience reduces damage
+    final_damage = max(damage - defender.stats[0], 0)  # Defender's resilience reduces damage
     return final_damage
 
 def player_attack(player, enemy, update_text, text_box, input_box):
@@ -57,8 +58,11 @@ def attempt_flee(player, enemy, update_text, text_box, input_box):
 
 def battle_start(player, enemy, update_text, text_box, input_box):
     """Start a battle between player and enemy."""
-    
     def process_battle_command():
+        if textUtils.is_scrolling:  # Skip text scrolling if it's active
+            textUtils.skip_scrolling(text_box, input_box)
+            return
+
         action = input_box.get().capitalize()
         input_box.delete(0, 'end')  # Clear the input after the command
 
@@ -83,10 +87,14 @@ def battle_start(player, enemy, update_text, text_box, input_box):
         if enemy.stats[4] > 0 and player.stats[4] > 0:
             enemy_turn(player, enemy, update_text, text_box, input_box)
 
-        # Check for victory or defeat
+        # After both actions, wait for text to complete before next prompt
+        text_box.after(500, check_battle_status)  # Delay for smooth flow
+
+    def check_battle_status():
+        """Check for victory or defeat, and ask for the next action if both are alive."""
         if player.stats[4] > 0 and enemy.stats[4] > 0:
-            text_box.config(state=tk.NORMAL)  # Enable text box for direct insertion
-            text_box.insert(tk.END, "What will you do? (Attack, Spell, Inventory, Flee):\n")
+            text_box.config(state=tk.NORMAL)  # Direct insertion without char-by-char
+            text_box.insert(tk.END, "x\n")
             text_box.config(state=tk.DISABLED)
         elif player.stats[4] <= 0:
             update_text("You were defeated!\n", text_box, input_box)
@@ -95,4 +103,7 @@ def battle_start(player, enemy, update_text, text_box, input_box):
 
     # Bind input box to the battle command processing function
     input_box.bind("<Return>", lambda event: process_battle_command())
-    update_text("What will you do? (Attack, Spell, Inventory, Flee):\n", text_box, input_box)
+
+    # Initial prompt for the player, char-by-char for battle start
+    update_text("Prepare for battle!\n", text_box, input_box)
+    text_box.after(1000, lambda: update_text("What will you do? (Attack, Spell, Inventory, Flee):\n", text_box, input_box))
